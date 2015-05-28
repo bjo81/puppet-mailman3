@@ -5,6 +5,8 @@ class mailman3::core (
   $username    = 'mailman',
   $groupname   = 'mailman',
   $installroot = '/usr/local/mailman3-core',
+  $gid         = '9999',
+  $uid         = '9999',
 ) inherits ::mailman3::params {
 
   include mailman3
@@ -13,18 +15,32 @@ class mailman3::core (
     ensure => present,
   }
 
+  group { $groupname:
+    ensure => present,
+    gid    => $gid,
+  }->
+
+  user { $username:
+    ensure  => present,
+    uid     => $uid,
+    gid     => $groupname,
+    home    => "/home/${username}",
+    require => Group[$groupname],
+  }->
+
   file {
     $installroot:
-      ensure => directory,
-      owner  => $username,
-      group  => $groupname,
-      mode   => '0755';
+      ensure  => directory,
+      owner   => $username,
+      group   => $groupname,
+      mode    => '0755',
+      require => User[$username];
     "${installroot}/mailman.txt":
-      ensure => present,
-      owner  => $username,
-      group  => $groupname,
-      mode   => '0644',
-      source => 'puppet:///modules/mailman3/requirements/mailman.txt';
+      ensure  => present,
+      owner   => $username,
+      group   => $groupname,
+      mode    => '0644',
+      source  => 'puppet:///modules/mailman3/requirements/mailman.txt',
   }
 
   # Because pyvenv in ubuntu 14.04 broke, manually create it for now
@@ -35,7 +51,7 @@ class mailman3::core (
     user    => $username,
     group   => $groupname,
     path    => [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
-    require => [ Class['python'], Package['python-virtualenv'] ],
+    require => [ Package['python-virtualenv'], User[$username] ],
   }
 
   # Once pyvenv in ubuntu 14.04 is fixed, comment out the above exec,
@@ -52,7 +68,7 @@ class mailman3::core (
       cwd          => $installroot,
       virtualenv   => "${installroot}/venv3",
       owner        => $username,
-      group        => $username,
+      group        => $groupname,
       require      => [ Package['python3-dev'], Exec['create python3 venv'], File["${installroot}/mailman.txt"] ],
   }
 
