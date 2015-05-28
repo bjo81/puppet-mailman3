@@ -1,10 +1,11 @@
 #/etc/puppet/modules/mailman3/manifests/core.pp
 
 class mailman3::core (
-  $packages  = ['python3-dev'],
-  $username  = 'mailman',
-  $groupname = 'mailman',
-) {
+  $packages    = ['python3-dev'],
+  $username    = 'mailman',
+  $groupname   = 'mailman',
+  $installroot = '/usr/local/mailman3-core',
+) inherits ::mailman3::params {
 
   include mailman3
 
@@ -12,19 +13,25 @@ class mailman3::core (
     ensure => present,
   }
 
-  file { "/home/${username}/mailman.txt":
-    ensure => present,
-    owner  => $username,
-    group  => $groupname,
-    mode   => '0644',
-    source => 'puppet:///modules/mailman3/requirements/mailman.txt',
+  file {
+    $installroot:
+      ensure => present,
+      owner  => $username,
+      group  => $groupname,
+      mode   => '0755';
+    "${installroot}/mailman.txt":
+      ensure => present,
+      owner  => $username,
+      group  => $groupname,
+      mode   => '0644',
+      source => 'puppet:///modules/mailman3/requirements/mailman.txt';
   }
 
   # Because pyvenv in ubuntu 14.04 broke, manually create it for now
   exec { 'create python3 venv':
     command => 'virtualenv -p python3 venv3',
-    cwd     => "/home/${username}",
-    creates => "/home/${username}/venv3",
+    cwd     => $installroot,
+    creates => "${installroot}/venv3",
     user    => $username,
     group   => $groupname,
     path    => [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
@@ -39,13 +46,14 @@ class mailman3::core (
   #  group  => $username,
   #}
 
-  python::requirements { 'mailman3.txt':
-    requirements => "/home/${username}/mailman.txt",
-    cwd          => "/home/${username}",
-    virtualenv   => "/home/${username}/venv3",
-    owner        => $username,
-    group        => $username,
-    require      => [ Package['python3-dev'], Exec['create python3 venv'], File["/home/${username}/mailman.txt"] ],
+  python::requirements {
+    'mailman3.txt':
+      requirements => "${installroot}/mailman.txt",
+      cwd          => $installroot,
+      virtualenv   => "${installroot}/venv3",
+      owner        => $username,
+      group        => $username,
+      require      => [ Package['python3-dev'], Exec['create python3 venv'], File["${installroot}/mailman.txt"] ],
   }
 
 }
