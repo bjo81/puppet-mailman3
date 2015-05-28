@@ -1,7 +1,7 @@
 #/etc/puppet/modules/mailman3/manifests/postorius.pp
 
 class mailman3::postorius (
-  $packages  = [],
+  $packages    = [],
   $installroot = '/var/www/postorius',
 ) inherits ::mailman3::params {
 
