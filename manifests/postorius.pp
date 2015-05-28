@@ -34,7 +34,7 @@ class mailman3::postorius (
       owner        => $apache::group,
       group        => $apache::group,
       require      => File["${installroot}/postorius.txt"],
-  }
+  }->
 
   exec { 'postorius collectstatic':
     command => "${installroot}/venv2/bin/python manage.py collectstatic --noinput",
