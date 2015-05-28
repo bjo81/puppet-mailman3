@@ -2,12 +2,12 @@
 
 class mailman3::postorius (
   $packages  = [],
-  $username  = 'postorius',
-  $groupname = 'postorius',
-  $installroot = '/usr/local/mailman3-postorius',
+  $installroot = '/var/www/postorius',
 ) inherits ::mailman3::params {
 
   include mailman3
+
+  require apache
 
   package { $packages:
     ensure => present,
@@ -16,13 +16,13 @@ class mailman3::postorius (
   file {
     $installroot:
       ensure => directory,
-      owner  => $username,
-      group  => $groupname,
+      owner  => $apache::user,
+      group  => $apache::group,
       mode   => '0755';
     "${installroot}/postorius.txt":
       ensure => present,
-      owner  => $username,
-      group  => $groupname,
+      owner  => $apache::user,
+      group  => $apache::group,
       mode   => '0644',
       source => 'puppet:///modules/mailman3/requirements/postorius.txt';
   }
@@ -31,8 +31,8 @@ class mailman3::postorius (
     "${installroot}/venv2":
       ensure       => present,
       requirements => "${installroot}/postorius.txt",
-      owner        => $username,
-      group        => $groupname,
+      owner        => $apache::group,
+      group        => $apache::group,
       require      => File["${installroot}/postorius.txt"],
   }
 }
