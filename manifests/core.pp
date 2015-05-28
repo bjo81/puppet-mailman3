@@ -15,7 +15,7 @@ class mailman3::core (
 
   file {
     $installroot:
-      ensure => present,
+      ensure => directory,
       owner  => $username,
       group  => $groupname,
       mode   => '0755';
@@ -31,7 +31,7 @@ class mailman3::core (
   exec { 'create python3 venv':
     command => 'virtualenv -p python3 venv3',
     cwd     => $installroot,
-    creates => "${installroot}/venv3",
+    creates => "${installroot}/venv3/bin/activate",
     user    => $username,
     group   => $groupname,
     path    => [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],

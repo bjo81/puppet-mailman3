@@ -15,7 +15,7 @@ class mailman3::hyperkitty (
 
   file {
     $installroot:
-      ensure => present,
+      ensure => directory,
       owner  => $username,
       group  => $groupname,
       mode   => '0755';
