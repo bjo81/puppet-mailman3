@@ -14,3 +14,8 @@
 
 class mailman3::core::config (
   $siteowner   = 'root@localhost', # Set a default address that should be safe.
+
+
+) {
+
+}
