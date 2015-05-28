@@ -54,24 +54,32 @@ class mailman3::core (
       source => 'puppet:///modules/mailman3/mailman3/mailman.cfg';
   }
 
-  # Because pyvenv in ubuntu 14.04 broke, manually create it for now
-  exec { 'create python3 venv':
-    command => 'virtualenv -p python3 venv3',
-    cwd     => $installroot,
-    creates => "${installroot}/venv3/bin/activate",
-    user    => $username,
-    group   => $groupname,
-    path    => [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
-    require => [ Package['python-virtualenv'], User[$username] ],
-  }
 
-  # Once pyvenv in ubuntu 14.04 is fixed, comment out the above exec,
-  # and uncomment the below pyvenv block
-  #python::pyvenv { '/opt/venv3':
-  #  ensure => present,
-  #  owner  => $username,
-  #  group  => $username,
-  #}
+  # Because pyvenv in ubuntu 14.04 broke, manually create it for now
+
+  case $operatingsystem {
+    'Ubuntu': {
+      case $operatingsystemrelease {
+        '14.04':
+          exec { 'create python3 venv':
+            command => 'virtualenv -p python3 venv3',
+            cwd     => $installroot,
+            creates => "${installroot}/venv3/bin/activate",
+            user    => $username,
+            group   => $groupname,
+            path    => [ '/bin', '/usr/bin', '/usr/sbin', '/usr/local/bin' ],
+            require => [ Package['python-virtualenv'], User[$username] ],
+          }
+        }
+      }
+    default: {
+      python::pyvenv { '/opt/venv3':
+        ensure => present,
+        owner  => $username,
+        group  => $username,
+      }
+    }
+  }
 
   python::requirements {
     'mailman3.txt':
@@ -82,5 +90,6 @@ class mailman3::core (
       group        => $groupname,
       require      => [ Package['python3-dev'], Exec['create python3 venv'], File["${installroot}/mailman.txt"] ],
   }
+
 
 }
