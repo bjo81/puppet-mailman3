@@ -24,7 +24,7 @@ import sys
 import os.path
 
 # Mailman API credentials
-MAILMAN_API_URL = 'http://192.168.33.2:8001'
+MAILMAN_API_URL = 'http://localhost:8001'
 MAILMAN_USER = 'restadmin'
 MAILMAN_PASS = 'restpass'
 
