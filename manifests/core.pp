@@ -40,7 +40,18 @@ class mailman3::core (
       owner   => $username,
       group   => $groupname,
       mode    => '0644',
-      source  => 'puppet:///modules/mailman3/requirements/mailman.txt',
+      source  => 'puppet:///modules/mailman3/requirements/mailman.txt';
+    '/etc/mailman':
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755';
+    '/etc/mailman/mailman.cfg':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => 'puppet:///modules/mailman3/mailman3/mailman.cfg';
   }
 
   # Because pyvenv in ubuntu 14.04 broke, manually create it for now
