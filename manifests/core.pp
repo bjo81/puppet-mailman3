@@ -60,7 +60,7 @@ class mailman3::core (
   case $operatingsystem {
     'Ubuntu': {
       case $operatingsystemrelease {
-        '14.04':
+        '14.04': {
           exec { 'create python3 venv':
             command => 'virtualenv -p python3 venv3',
             cwd     => $installroot,
@@ -72,6 +72,7 @@ class mailman3::core (
           }
         }
       }
+    }
     default: {
       python::pyvenv { '/opt/venv3':
         ensure => present,
