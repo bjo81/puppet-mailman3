@@ -25,6 +25,12 @@ class mailman3::postorius (
       group  => $apache::group,
       mode   => '0644',
       source => 'puppet:///modules/mailman3/requirements/postorius.txt';
+    "${installroot}/postorius_standalone":
+      ensure  => directory,
+      owner   => $apache::user,
+      group   => $apache::group,
+      recurse => true,
+      source  => 'puppet:///modules/mailman3/postorius';
   }
 
   python::virtualenv {
@@ -41,5 +47,6 @@ class mailman3::postorius (
     creates => "${installroot}/postorius_standalone/static/postorius",
     cwd     => "${installroot}/postorius_standalone",
     user    => $apache::user,
+    require => File["${installroot}/postorius_standalone"],
   }
 }
