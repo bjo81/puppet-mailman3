@@ -31,17 +31,17 @@ site_owner: <%= @siteowner %>
 # message comes from some entity to which there is no natural reply recipient.
 # Mailman will append '@' and the host name of the list involved.  This
 # address must not bounce and it must not point to a Mailman process.
-noreply_address: noreply
+noreply_address: <%= @noreplyaddress %>
 
 # The default language for this server.
-default_language: en
+default_language: <%= @defaultlanguage %>
 
 # Membership tests for posting purposes are usually performed by looking at a
 # set of headers, passing the test if any of their values match a member of
 # the list.  Headers are checked in the order given in this variable.  The
 # value From_ means to use the envelope sender.  Field names are case
 # insensitive.  This is a space separate list of headers.
-sender_headers: from from_ reply-to sender
+sender_headers: <%= @senderheaders %>
 
 # Mail command processor will ignore mail command lines after designated max.
 email_commands_max_lines: 10
