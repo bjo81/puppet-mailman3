@@ -1,6 +1,6 @@
-#/etc/puppet/modules/mailman_asf/manifests/init.pp
+#/etc/puppet/modules/mailman3/manifests/init.pp
 
-class mailman_asf (
+class mailman3 (
 ) {
 
   include python

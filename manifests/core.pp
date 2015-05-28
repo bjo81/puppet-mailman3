@@ -1,12 +1,12 @@
-#/etc/puppet/modules/mailman_asf/manifests/core.pp
+#/etc/puppet/modules/mailman3/manifests/core.pp
 
-class mailman_asf::core (
+class mailman3::core (
   $packages  = ['python3-dev'],
   $username  = 'mailman',
   $groupname = 'mailman',
 ) {
 
-  include mailman_asf
+  include mailman3
 
   package { $packages:
     ensure => present,
@@ -17,7 +17,7 @@ class mailman_asf::core (
     owner  => $username,
     group  => $groupname,
     mode   => '0644',
-    source => 'puppet:///modules/mailman_asf/requirements/mailman.txt',
+    source => 'puppet:///modules/mailman3/requirements/mailman.txt',
   }
 
   # Because pyvenv in ubuntu 14.04 broke, manually create it for now

@@ -1,12 +1,12 @@
-#/etc/puppet/modules/mailman_asf/manifests/postorius.pp
+#/etc/puppet/modules/mailman3/manifests/postorius.pp
 
-class mailman_asf::postorius (
+class mailman3::postorius (
   $packages  = [],
   $username  = 'postorius',
   $groupname = 'postorius',
 ) {
 
-  include mailman_asf
+  include mailman3
 
   package { $packages:
     ensure => present,
@@ -17,7 +17,7 @@ class mailman_asf::postorius (
     owner  => $username,
     group  => $groupname,
     mode   => '0644',
-    source => 'puppet:///modules/mailman_asf/requirements/postorius.txt',
+    source => 'puppet:///modules/mailman3/requirements/postorius.txt',
   }
 
   python::virtualenv { "/home/${username}/venv2":

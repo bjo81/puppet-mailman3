@@ -1,12 +1,12 @@
-#/etc/puppet/modules/mailman_asf/manifests/hyperkitty.pp
+#/etc/puppet/modules/mailman3/manifests/hyperkitty.pp
 
-class mailman_asf::hyperkitty (
+class mailman3::hyperkitty (
   $packages  = [],
   $username  = 'hyperkitty',
   $groupname = 'hyperkitty',
 ) {
 
-  include mailman_asf
+  include mailman3
 
   package { $packages:
     ensure => present,
@@ -17,7 +17,7 @@ class mailman_asf::hyperkitty (
     owner  => $username,
     group  => $groupname,
     mode   => '0644',
-    source => 'puppet:///modules/mailman_asf/requirements/hyperkitty.txt',
+    source => 'puppet:///modules/mailman3/requirements/hyperkitty.txt',
   }
 
   python::virtualenv { "/home/${username}/venv2":
