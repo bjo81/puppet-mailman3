@@ -2,11 +2,9 @@
 
 class mailman3::core (
   $packages    = ['python3-dev'],
-  $username    = 'mailman',
-  $groupname   = 'mailman',
+  $username    = 'mailman3',
+  $groupname   = 'mailman3',
   $installroot = '/usr/local/mailman3-core',
-  $gid         = '9999',
-  $uid         = '9999',
 ) inherits ::mailman3::params {
 
   include mailman3
@@ -17,14 +15,14 @@ class mailman3::core (
 
   group { $groupname:
     ensure => present,
-    gid    => $gid,
+    system => true,
   }->
 
   user { $username:
     ensure  => present,
-    uid     => $uid,
     gid     => $groupname,
     home    => "/home/${username}",
+    system  => true,
     require => Group[$groupname],
   }->
 
