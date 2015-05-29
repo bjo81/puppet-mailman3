@@ -1,7 +1,7 @@
 #/etc/puppet/modules/mailman3/manifests/hyperkitty.pp
 
 class mailman3::hyperkitty (
-  $packages    = [],
+  $packages    = ['nodejs-legacy', 'node-less'],
   $installroot = '/var/www/hyperkitty',
 ) inherits ::mailman3::params {
 
@@ -24,7 +24,13 @@ class mailman3::hyperkitty (
       owner  => $apache::user,
       group  => $apache::group,
       mode   => '0644',
-      source => 'puppet:///modules/mailman3/requirements/hyperkitty.txt',
+      source => 'puppet:///modules/mailman3/requirements/hyperkitty.txt';
+    "${installroot}/hyperkitty_standalone":
+      ensure  => directory,
+      owner   => $apache::user,
+      group   => $apache::group,
+      recurse => true,
+      source  => 'puppet:///modules/mailman3/hyperkitty';
   }
 
   python::virtualenv {
@@ -35,4 +41,21 @@ class mailman3::hyperkitty (
       group        => $apache::group,
       require      => File["${installroot}/hyperkitty.txt"],
   }
+
+  exec { 'hyperkitty collectstatic':
+    command => "${installroot}/venv2/bin/django-admin.py collectstatic --noinput --pythonpath ${installroot}/hyperkitty_standalone --settings settings",
+    creates => "${installroot}/hyperkitty_standalone/static/hyperkitty",
+    cwd     => "${installroot}/hyperkitty_standalone",
+    user    => $apache::user,
+    require => File["${installroot}/hyperkitty_standalone"],
+  }->
+
+  exec { 'hyperkitty compress':
+    command => "${installroot}/venv2/bin/django-admin.py compress --pythonpath ${installroot}/hyperkitty_standalone --settings settings --force",
+    creates => "${installroot}/hyperkitty_standalone/static/CACHE",
+    cwd     => "${installroot}/hyperkitty_standalone",
+    user    => $apache::user,
+    require => [ File["${installroot}/hyperkitty_standalone"], Package[$packages] ],
+  }
+
 }
