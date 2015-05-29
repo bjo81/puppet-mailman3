@@ -62,7 +62,7 @@ post_hook: <%= @posthook %>
 layout: <%= @layouts %>
 
 # Can MIME filtered messages be preserved by list owners?
-filtered_messages_are_preservable: no
+filtered_messages_are_preservable: <%= @preservefiliteredmime %>
 
 
 [shell]
@@ -95,40 +95,40 @@ use_ipython: no
 #
 # This is the root of the directory structure that Mailman will use to store
 # its run-time data.
-var_dir: /var/tmp/mailman
+var_dir: <%= @vardir %>
 # This is where the Mailman queue files directories will be created.
-queue_dir: $var_dir/queue
+queue_dir: <%= @queuedir %>
 # This is the directory containing the Mailman 'runner' and 'master' commands
 # if set to the string '$argv', it will be taken as the directory containing
 # the 'mailman' command.
-bin_dir: $argv
+bin_dir: <%= @bindir %>
 # All list-specific data.
-list_data_dir: $var_dir/lists
+list_data_dir: <%= @listdatadir %>
 # Directory where log files go.
-log_dir: $var_dir/logs
+log_dir: <%= @logdir %>
 # Directory for system-wide locks.
-lock_dir: $var_dir/locks
+lock_dir: <%= @lockdir %>
 # Directory for system-wide data.
-data_dir: $var_dir/data
+data_dir: <%= @datadir %>
 # Directory for configuration files and such.
-etc_dir: $var_dir/etc
+etc_dir: <%= @etcdir %>
 # Directory containing Mailman plugins.
-ext_dir: $var_dir/ext
+ext_dir: <%= @extdir %>
 # Directory where the default IMessageStore puts its messages.
-messages_dir: $var_dir/messages
+messages_dir: <%= @messagesdir %>
 # Directory for archive backends to store their messages in.  Archivers should
 # create a subdirectory in here to store their files.
-archive_dir: $var_dir/archives
+archive_dir: <%= @archivedir %>
 # Root directory for site-specific template override files.
-template_dir: $var_dir/templates
+template_dir: <%= @templatedir %>
 # There are also a number of paths to specific file locations that can be
 # defined.  For these, the directory containing the file must already exist,
 # or be one of the directories created by Mailman as per above.
 #
 # This is where PID file for the master runner is stored.
-pid_file: $var_dir/master.pid
+pid_file: <%= @pidfile %>
 # Lock file.
-lock_file: $lock_dir/master.lck
+lock_file: <%= @lockfile %>
 
 
 [devmode]
