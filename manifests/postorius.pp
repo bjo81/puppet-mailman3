@@ -1,11 +1,12 @@
 #/etc/puppet/modules/mailman3/manifests/postorius.pp
 
 class mailman3::postorius (
-  $packages    = [],
+  $packages    = [], # put any packages needed by postorius's vitualenv, such as postgres-dev for psycopg2
   $installroot = '/var/www/postorius',
 ) inherits ::mailman3::params {
 
   include mailman3
+  include mailman3::postorius::config
 
   require apache
 
@@ -30,8 +31,9 @@ class mailman3::postorius (
       owner   => $apache::user,
       group   => $apache::group,
       recurse => true,
+      before  => Class[mailman3::postorius::config],
       source  => 'puppet:///modules/mailman3/postorius';
-  }
+  }->
 
   python::virtualenv {
     "${installroot}/venv2":
@@ -39,7 +41,7 @@ class mailman3::postorius (
       requirements => "${installroot}/postorius.txt",
       owner        => $apache::group,
       group        => $apache::group,
-      require      => File["${installroot}/postorius.txt"],
+      require      => Package[$packages],
   }->
 
   exec { 'postorius collectstatic':
