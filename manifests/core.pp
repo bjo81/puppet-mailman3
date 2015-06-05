@@ -55,9 +55,9 @@ class mailman3::core (
 
   # Because pyvenv in ubuntu 14.04 broke, manually create it for now
 
-  case $operatingsystem {
+  case $::operatingsystem {
     'Ubuntu': {
-      case $operatingsystemrelease {
+      case $::operatingsystemrelease { # lint:ignore:case_without_default
         '14.04': {
           exec { 'create python3 venv':
             command => 'virtualenv -p python3 venv3',
