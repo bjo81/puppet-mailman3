@@ -39,12 +39,12 @@ class mailman3::core (
       group   => $groupname,
       mode    => '0644',
       source  => 'puppet:///modules/mailman3/requirements/mailman.txt';
-    '/etc/mailman':
+    '/var/run/mailman':
       ensure => directory,
-      owner  => 'root',
-      group  => 'root',
+      owner  => $username,
+      group  => $groupname,
       mode   => '0755';
-    '/etc/mailman/mailman.cfg':
+    '/etc/mailman.cfg':
       ensure => present,
       owner  => 'root',
       group  => 'root',
@@ -94,7 +94,7 @@ class mailman3::core (
       virtualenv   => "${installroot}/venv3",
       owner        => $username,
       group        => $groupname,
-      require      => [ Package['python3-dev'], Exec['create python3 venv'], File["${installroot}/mailman.txt"] ],
+      require      => [ Package['python3-dev'], File["${installroot}/mailman.txt"] ],
   }->
 
   service { 'mailman3':
@@ -102,7 +102,7 @@ class mailman3::core (
     enable     => true,
     hasrestart => 'false',
     hasstatus  => 'false',
-    require    => File['/etc/init.d/mailman3'],
+    require    => File['/etc/init.d/mailman3', '/etc/mailman.cfg'],
   }
 
 
