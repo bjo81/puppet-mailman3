@@ -174,7 +174,7 @@ class mailman3::core::config (
   $languagemastercharset     = 'us-ascii',
   $languagemasterdescription = 'English (USA)',
   $languagemasterenabled     = 'yes',
-  $layouts                   = 'here',
+  $layouts                   = 'master',
   $listdatadir               = '$var_dir/lists',
   $lockdir                   = '$var_dir/locks',
   $lockfile                  = '$lock_dir/master.lck',
