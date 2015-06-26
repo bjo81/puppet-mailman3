@@ -1,4 +1,4 @@
-#/etc/puppet/modules/mailman3/manifests/core/config.pp
+F1abb3rG@st3d#/etc/puppet/modules/mailman3/manifests/core/config.pp
 
 # == Class mailman3::core::config
 #
@@ -20,6 +20,25 @@
 #
 # [*defaultlanguage*]
 #  The default language for this server.
+#
+# [*devmodeenabled*]
+# Setting enabled to true enables certain safeguards and other behavior
+# changes that make developing Mailman easier.  For example, it forces the
+# SMTP RCPT TO recipients to be a test address so that no messages are
+# accidentally sent to real addresses.
+#
+# [*devmoderecipient*]
+# Set this to an address to force the SMTP RCPT TO recipents when devmode is
+# enabled.  This way messages can't be accidentally sent to real addresses.
+#
+# [*devmodetesting*]
+# This gets set by the testing layers so that the runner subprocesses produce
+# predictable dates and times.
+#
+# [*devmodewait*]
+# Time-outs for starting up various test subprocesses, such as the LMTP and
+# REST servers.  This is only used for the test suite, so if you're seeing
+# test failures, try increasing the wait time.
 #
 # [*emailcmdsmaxlines*]
 #  Mail command processor will ignore mail command lines after designated max.
@@ -102,6 +121,10 @@ class mailman3::core::config (
   $bindir                = '$argv',
   $datadir               = '$var_dir/data',
   $defaultlanguage       = 'en',
+  $devmodenabled         = 'no',
+  $devmoderecipient      = '',
+  $devmodetesting        = 'no',
+  devmodewait            = '60s',
   $emailcmdsmaxlines     = '10',
   $etcdir                = '$var_dir/etc',
   $extdir                = '$var_dir/ext',
