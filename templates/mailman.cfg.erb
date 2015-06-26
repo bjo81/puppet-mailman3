@@ -315,26 +315,26 @@ failure: <%= @loggingsmtpmsgfailure %>
 
 [webservice]
 # The hostname at which admin web service resources are exposed.
-hostname: localhost
+hostname: <%= @webservicehostname %>
 
 # The port at which the admin web service resources are exposed.
-port: 8001
+port: <%= @webserviceport %>
 
 # Whether or not requests to the web service are secured through SSL.
-use_https: no
+use_https: <%= @webserviceusehttps %>
 
 # Whether or not to show tracebacks in an HTTP response for a request that
 # raised an exception.
-show_tracebacks: yes
+show_tracebacks: <%= @webserviceshowtracebacks %>
 
 # The API version number for the current API.
-api_version: 3.0
+api_version: <%= @webserviceapiversion %>
 
 # The administrative username.
-admin_user: restadmin
+admin_user: <%= @webserviceadminuser %>
 
 # The administrative password.
-admin_pass: restpass
+admin_pass: <%= @webserviceadminpass %>
 
 
 [language.master]
@@ -342,200 +342,277 @@ admin_pass: restpass
 # where xx is the 2-character ISO code for the language.
 
 # The English name for the language.
-description: English (USA)
+description: <%= @languagemasterdescription %>
 # And the default character set for the language.
-charset: us-ascii
+charset: <%= @languagemastercharset %>
 # Whether the language is enabled or not.
-enabled: yes
+enabled: <%= @languagemasterenabled %>
 
+<% if @languageaddon_enabled -%>
 # Language charsets as imported from Mailman 2.1 defaults
 # Ref: http://www.lingoes.net/en/translator/langcode.htm
+
+<% if @languageaddon_ar -%>
 [language.ar]
 description: Arabic
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_ast -%>
 [language.ast]
 description: Asturian
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_ca -%>
 [language.ca]
 description: Catalan
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_cs -%>
 [language.cs]
 description: Czech
 charset: iso-8859-2
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_da -%>
 [language.da]
 description: Danish
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_de -%>
 [language.de]
 description: German
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_el -%>
 [language.el]
 description: Greek
 charset: iso-8859-7
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_es -%>
 [language.es]
 description: Spanish
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_et -%>
 [language.et]
 description: Estonian
 charset: iso-8859-15
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_eu -%>
 [language.eu]
 # Basque
 description: Euskara
 charset: iso-8859-15
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_fi -%>
 [language.fi]
 description: Finnish
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_fr -%>
 [language.fr]
 description: French
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_gl -%>
 [language.gl]
 description: Galician
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_he -%>
 [language.he]
 description: Hebrew
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_hr -%>
 [language.hr]
 description: Croatian
 charset: iso-8859-2
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_hu -%>
 [language.hu]
 description: Hungarian
 charset: iso-8859-2
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_ia -%>
 [language.ia]
 description: Interlingua
 charset: iso-8859-15
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_it -%>
 [language.it]
 description: Italian
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_jp -%>
 [language.ja]
 description: Japanese
 charset: euc-jp
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_kr -%>
 [language.ko]
 description: Korean
 charset: euc-kr
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_lt -%>
 [language.lt]
 description: Lithuanian
 charset: iso-8859-13
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_nl -%>
 [language.nl]
 description: Dutch
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_no -%>
 [language.no]
 description: Norwegian
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_pl -%>
 [language.pl]
 description: Polish
 charset: iso-8859-2
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_pt -%>
 [language.pt]
 description: Protuguese
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_ptbr -%>
 [language.pt_BR]
 description: Protuguese (Brazil)
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_ro -%>
 [language.ro]
 description: Romanian
 charset: iso-8859-2
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_ru -%>
 [language.ru]
 description: Russian
 charset: koi8-r
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_sk -%>
 [language.sk]
 description: Slovak
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_sl -%>
 [language.sl]
 description: Slovenian
 charset: iso-8859-2
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_sr -%>
 [language.sr]
 description: Serbian
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_sv -%>
 [language.sv]
 description: Swedish
 charset: iso-8859-1
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_tr -%>
 [language.tr]
 description: Turkish
 charset: iso-8859-9
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_uk -%>
 [language.uk]
 description: Ukrainian
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_vi -%>
 [language.vi]
 description: Vietnamese
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_zhcn -%>
 [language.zh_CN]
 description: Chinese
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% if @languageaddon_zhtw -%>
 [language.zh_TW]
 description: Chinese (Taiwan)
 charset: utf-8
 enabled: yes
+<% end -%>
 
+<% end -%>
 
 [antispam]
 # This section defines basic antispam detection settings.
@@ -549,12 +626,12 @@ enabled: yes
 #
 # The header value and regular expression are always matched
 # case-insensitively.
-header_checks:
+header_checks: <%= @antispamheaderchecks %>
 
 # The chain to jump to if any of the header patterns matches.  This must be
 # the name of an existing chain such as 'discard', 'reject', 'hold', or
 # 'accept', otherwise 'hold' will be used.
-jump_chain: hold
+jump_chain: <%= @antispamjumpchain %>
 
 
 [mta]
