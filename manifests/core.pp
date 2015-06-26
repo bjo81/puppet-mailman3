@@ -49,8 +49,15 @@ class mailman3::core (
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
-      source => 'puppet:///modules/mailman3/mailman3/mailman.cfg';
-  }
+      source => 'puppet:///modules/mailman3/mailman3/mailman.cfg',
+      notify => Service['mailman3'];
+    '/etc/init.d/mailman3':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      content => template('mailman3/mailman3_init.erb');
+  }->
 
 
   # Because pyvenv in ubuntu 14.04 broke, manually create it for now
@@ -78,7 +85,7 @@ class mailman3::core (
         group  => $username,
       }
     }
-  }
+  }->
 
   python::requirements {
     'mailman3.txt':
@@ -88,7 +95,16 @@ class mailman3::core (
       owner        => $username,
       group        => $groupname,
       require      => [ Package['python3-dev'], Exec['create python3 venv'], File["${installroot}/mailman.txt"] ],
+  }->
+
+  service { 'mailman3':
+    ensure     => running,
+    enable     => true,
+    hasrestart => 'false',
+    hasstatus  => 'false',
+    require    => File['/etc/init.d/mailman3'],
   }
+
 
 
 }
