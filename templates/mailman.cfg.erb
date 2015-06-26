@@ -131,9 +131,6 @@ pid_file: <%= @pidfile %>
 lock_file: <%= @lockfile %>
 
 
-#####  -- pctony - 20150604 - start here
-
-
 [devmode]
 # Setting enabled to true enables certain safeguards and other behavior
 # changes that make developing Mailman easier.  For example, it forces the
@@ -155,6 +152,9 @@ testing: <%= @devmodetesting %>
 wait: <%= @devmodwait %>
 
 
+#####  -- pctony - 20150604 - start here
+
+
 [passwords]
 # Where can we find the passlib configuration file?  The path can be either a
 # file system path or a Python import path.  If the value starts with python:
@@ -162,50 +162,50 @@ wait: <%= @devmodwait %>
 # system paths must be absolute since no guarantees are made about the current
 # working directory.  Python paths should not include the trailing .cfg, which
 # the file must end with.
-configuration: python:mailman.config.passlib
+configuration: <%= @passwordconfig %>
 
 # When Mailman generates them, this is the default length of passwords.
-password_length: 8
+password_length: <%= @passwordlength %>
 
 
 [runner.master]
 # Define which runners, and how many of them, to start.
 
 # The full import path to the class for this runner.
-class: mailman.core.runner.Runner
+class: <%= @masterclass %>
 
 # The queue directory path that this runner scans.  This is ignored for
 # runners that don't manage a queue directory.
-path: $QUEUE_DIR/$name
+path: <%= @masterpath %>
 
 # The number of parallel runners.  This must be a power of 2.  This is ignored
 # for runners that don't manage a queue directory.
-instances: 1
+instances: <%= @masterinstances %>
 
 # Whether to start this runner or not.
-start: yes
+start: <%= @masterstart %>
 
 # The maximum number of restarts for this runner.  When the runner exits
 # because of an error or other unexpected problem, it is automatically
 # restarted, until the maximum number of restarts has been reached.
-max_restarts: 10
+max_restarts: <%= @mastermaxrestarts %>
 
 # The sleep interval for the runner.  It wakes up once every interval to
 # process the files in its slice of the queue directory.  Some runners may
 # ignore this.
-sleep_time: 1s
+sleep_time: <%= @mastersleeptime %>
 
 [database]
 # The class implementing the IDatabase.
-class: mailman.database.sqlite.SQLiteDatabase
+class: <%= @databaseclass %>
 
 # Use this to set the Storm database engine URL.  You generally have one
 # primary database connection for all of Mailman.  List data and most rosters
 # will store their data in this database, although external rosters may access
 # other databases in their own way.  This string supports standard
 # 'configuration' substitutions.
-url: sqlite:///$DATA_DIR/mailman.db
-debug: no
+url: <%= @databaseurl %>
+debug: <%= @databasedebug %>
 
 [logging.template]
 # This defines various log settings.  The options available are:
@@ -252,16 +252,19 @@ path: mailman.log
 [logging.archiver]
 
 [logging.bounce]
-path: bounce.log
+path: <%= @loggingbouncepath %>
+level: <%= @loggingbouncelevel %>
 
 [logging.config]
 
 [logging.database]
+path: <%= @loggingdatabasepath %>
+level: <%= @loggingdatabaselevel %>
 level: warn
 
 [logging.debug]
-path: debug.log
-level: info
+path: <%= @loggingdebugpath %>
+level: <%= @loggingdebuglevel %>
 
 [logging.error]
 
@@ -276,7 +279,8 @@ level: info
 [logging.runner]
 
 [logging.smtp]
-path: smtp.log
+path: <%= @loggingsmtppath %>
+level: <%= @loggingsmtplevel %>
 
 # The smtp logger defines additional options for handling the logging of each
 # attempted delivery.  These format strings specify what information is logged
@@ -298,10 +302,10 @@ path: smtp.log
 # smtpcode  -- the SMTP success or failure code
 # smtpmsg   -- the SMTP success or failure message
 
-every: $msgid smtp to $listname for $recip recips, completed in $time seconds
-success: $msgid post to $listname from $sender, $size bytes
-refused: $msgid post to $listname from $sender, $size bytes, $refused failures
-failure: $msgid delivery to $recip failed with code $smtpcode, $smtpmsg
+every: <%= @loggingsmtpmsgevery %>
+success: <%= @loggingsmtpmsgsuccess %>
+refused: <%= @loggingsmtpmsgrefused %>
+failure: <%= @loggingsmtpmsgfailure %>
 
 
 [logging.subscribe]
