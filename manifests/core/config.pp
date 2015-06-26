@@ -1,4 +1,4 @@
-F1abb3rG@st3d#/etc/puppet/modules/mailman3/manifests/core/config.pp
+#/etc/puppet/modules/mailman3/manifests/core/config.pp
 
 # == Class mailman3::core::config
 #
