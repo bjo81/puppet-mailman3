@@ -100,8 +100,8 @@ class mailman3::core (
   service { 'mailman3':
     ensure     => running,
     enable     => true,
-    hasrestart => 'false',
-    hasstatus  => 'false',
+    hasrestart => true,
+    hasstatus  => true,
     require    => File['/etc/init.d/mailman3', '/etc/mailman.cfg'],
   }
 

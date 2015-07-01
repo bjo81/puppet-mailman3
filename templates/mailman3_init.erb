@@ -23,24 +23,33 @@ PIDFILE=/var/run/mailman/master.pid
 CMD="$DAEMON start"
 
 do_start() {
+  log_daemon_msg "Starting Mailman3 core" "mailman"
   start-stop-daemon --start --background --user $RUN_AS --pidfile $PIDFILE --chuid $RUN_AS --startas $CMD
+  log_end_msg $?
 }
 
 do_stop() {
+  log_daemon_msg "Stopping Mailman3 core" "mailman"
   start-stop-daemon --stop --user $RUN_AS --pidfile $PIDFILE
+  log_end_msg $?
 }
 
 case "$1" in
  start)
-   log_daemon_msg "Starting Mailman3 core" "mailman"
    do_start
    ;;
  stop)
-   log_daemon_msg "Stopping Mailman3 core" "mailman"
    do_stop
    ;;
+ restart)
+   do_stop
+   do_start
+   ;;
+ status)
+   status_of_proc -p "$PIDFILE" "$DAEMON" mailman && exit 0 || exit $?
+   ;;
  *)
-   echo "Usage: /etc/init.d/mailman {start|stop}" >&2
+   echo "Usage: /etc/init.d/mailman {start|stop|restart|status}" >&2
    exit 1
    ;;
 esac
