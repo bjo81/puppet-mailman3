@@ -39,7 +39,7 @@ DEBUG = False
 DEBUG = True
 <% end %>
 TEMPLATE_DEBUG = DEBUG
-ALLOWED_HOSTS = ('<%= @allowed_hosts.flatten.join("', '") %>', )
+ALLOWED_HOSTS = ['<%= @allowed_hosts.flatten.join("', '") %>', ]
 
 ADMINS = (
     #('Admin', 'webmaster@example.com'),
