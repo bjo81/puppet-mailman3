@@ -43,13 +43,11 @@ case "$1" in
    ;;
  restart)
    do_stop
+   sleep 5
    do_start
    ;;
- status)
-   status_of_proc -p "$PIDFILE" "$DAEMON" mailman && exit 0 || exit $?
-   ;;
  *)
-   echo "Usage: /etc/init.d/mailman {start|stop|restart|status}" >&2
+ echo "Usage: /etc/init.d/mailman {start|stop|restart}" >&2
    exit 1
    ;;
 esac
