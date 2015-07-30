@@ -102,6 +102,21 @@ class mailman3::postorius::config (
     }
   }
 
+  $db_connector = $db ? {
+    'porestgresql' => 'psycopg2',
+    'mysql'        => 'MySQL-python',
+    default        => undef,
+  }
+
+  if $db_connector != undef {
+    python::pip { $db_connector:
+      ensure     => present,
+      pkgname    => $db_connector,
+      virtualenv => "${mailman3::postorious::installroot}/venv2",
+      before     => Exec['postorius collectstatic'],
+    }
+  }
+
   file {
     $postorius_settings:
       ensure  => present,

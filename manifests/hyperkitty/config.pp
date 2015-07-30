@@ -135,6 +135,21 @@ class mailman3::hyperkitty::config (
     }
   }
 
+  $db_connector = $db ? {
+    'porestgresql' => 'psycopg2',
+    'mysql'        => 'MySQL-python',
+    default        => undef,
+  }
+
+  if $db_connector != undef {
+    python::pip { $db_connector:
+      ensure     => present,
+      pkgname    => $db_connector,
+      virtualenv => "${mailman3::hyperkitty::installroot}/venv2",
+      before     => Exec['hyperkitty collectstatic'],
+    }
+  }
+
   file {
     $hyperkitty_settings:
       ensure  => present,

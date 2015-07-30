@@ -121,7 +121,8 @@ class mailman3::core::config (
   $antispamjumpchain         = 'hold',
   $archivedir                = '$var_dir/archives',
   $bindir                    = '$argv',
-  $databaseclass             = 'mailman.database.sqlite.SQLiteDatabase',
+  $db                        = 'sqlite',
+#  $databaseclass             = 'mailman.database.sqlite.SQLiteDatabase',
   $databasedebug             = 'no',
   $databaseurl               = 'sqlite:///$DATA_DIR/mailman.db',
   $datadir                   = '$var_dir/data',
@@ -242,13 +243,36 @@ class mailman3::core::config (
 
 ) {
 
+  $databaseclass = $db ? {
+    'postgresql' => 'mailman.database.postgresql.PostgreSQLDatabase',
+    'sqlite'     => 'mailman.database.sqlite.SQLiteDatabase',
+    default      => undef,
+  }
+
+  if $databaseclass == undef {
+      fail("Invalid backend selected: ${db}\nValid options: postgresql or sqlite.")
+  }
+
+  $db_connector = $db ? {
+    'postgresql' => 'psycopg2',
+    default        => undef,
+  }
+
+  if $db_connector != undef {
+    python::pip { $db_connector:
+      ensure     => present,
+      pkgname    => $db_connector,
+      virtualenv => "${mailman3::core::installroot}/venv3",
+    }
+  }
+
   file {
     $mailmancfgfile:
       ensure  => present,
       content => template('mailman3/mailman.cfg.erb'),
-      owner   => $::mailman::core::username,
-      group   => $::mailman::core::groupname,
-      notify  => Service['mailman'];
+      owner   => $::mailman3::core::username,
+      group   => $::mailman3::core::groupname,
+      notify  => Service['mailman3'];
   }
 
 }
