@@ -8,6 +8,7 @@ class mailman3::core (
 ) inherits ::mailman3::params {
 
   include mailman3
+  include mailman3::core::config
 
   package { $packages:
     ensure => present,
@@ -44,13 +45,6 @@ class mailman3::core (
       owner  => $username,
       group  => $groupname,
       mode   => '0755';
-    '/etc/mailman.cfg':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-      source => 'puppet:///modules/mailman3/mailman3/mailman.cfg',
-      notify => Service['mailman3'];
     '/etc/init.d/mailman3':
       ensure  => present,
       owner   => 'root',
@@ -79,7 +73,7 @@ class mailman3::core (
       }
     }
     default: {
-      python::pyvenv { '/opt/venv3':
+      python::pyvenv { "${installroot}/venv3":
         ensure => present,
         owner  => $username,
         group  => $username,
@@ -100,7 +94,7 @@ class mailman3::core (
   service { 'mailman3':
     ensure     => running,
     enable     => true,
-    hasrestart => true,
+    hasrestart => false,
     hasstatus  => true,
     require    => File['/etc/init.d/mailman3', '/etc/mailman.cfg'],
   }
