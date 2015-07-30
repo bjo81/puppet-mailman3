@@ -33,6 +33,13 @@ class mailman3::hyperkitty (
       recurse => true,
       before  => Class[mailman3::hyperkitty::config],
       source  => 'puppet:///modules/mailman3/hyperkitty';
+    "${installroot}/hyperkitty_standalone/wsgi.py":
+      ensure  => present,
+      owner   => $apache::user,
+      group   => $apache::group,
+      before  => Class[mailman3::hyperkitty::config],
+      content => template('mailman3/hyperkitty/wsgi.py.erb'),
+      require => File["${installroot}/hyperkitty_standalone"];
   }->
 
   python::virtualenv {
