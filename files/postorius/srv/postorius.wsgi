@@ -7,7 +7,7 @@ root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 # prepend root dir to python path
 site.addsitedir(root_dir)
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'local_settings'
 
 # use for django 1.8.x
 #import django.core.handlers.wsgi
