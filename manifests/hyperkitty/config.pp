@@ -141,6 +141,8 @@ class mailman3::hyperkitty::config (
     default        => undef,
   }
 
+  notify { "db_connector: ${db_connector}": }
+
   if $db_connector != undef {
     python::pip { $db_connector:
       ensure     => present,
