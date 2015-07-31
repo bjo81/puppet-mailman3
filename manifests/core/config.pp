@@ -259,7 +259,7 @@ class mailman3::core::config (
   }
 
   if $db_connector != undef {
-    python::pip { $db_connector:
+    python::pip { "core_${db_connector}":
       ensure     => present,
       pkgname    => $db_connector,
       virtualenv => "${mailman3::core::installroot}/venv3",

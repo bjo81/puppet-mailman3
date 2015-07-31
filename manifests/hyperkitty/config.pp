@@ -142,7 +142,7 @@ class mailman3::hyperkitty::config (
   }
 
   if $db_connector != undef {
-    python::pip { $db_connector:
+    python::pip { "hyperkitty_${db_connector}":
       ensure     => present,
       pkgname    => $db_connector,
       virtualenv => "${mailman3::hyperkitty::installroot}/venv2",

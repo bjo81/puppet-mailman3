@@ -109,7 +109,7 @@ class mailman3::postorius::config (
   }
 
   if $db_connector != undef {
-    python::pip { $db_connector:
+    python::pip { "postorius_${db_connector}":
       ensure     => present,
       pkgname    => $db_connector,
       virtualenv => "${mailman3::postorious::installroot}/venv2",
