@@ -136,12 +136,10 @@ class mailman3::hyperkitty::config (
   }
 
   $db_connector = $db ? {
-    'porestgresql' => 'psycopg2',
+    'postgresql' => 'psycopg2',
     'mysql'        => 'MySQL-python',
     default        => undef,
   }
-
-  notify { "db_connector: ${db_connector}": }
 
   if $db_connector != undef {
     python::pip { $db_connector:

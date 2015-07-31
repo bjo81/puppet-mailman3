@@ -103,7 +103,7 @@ class mailman3::postorius::config (
   }
 
   $db_connector = $db ? {
-    'porestgresql' => 'psycopg2',
+    'postgresql' => 'psycopg2',
     'mysql'        => 'MySQL-python',
     default        => undef,
   }
