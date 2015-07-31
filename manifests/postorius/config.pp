@@ -112,7 +112,7 @@ class mailman3::postorius::config (
     python::pip { "postorius_${db_connector}":
       ensure     => present,
       pkgname    => $db_connector,
-      virtualenv => "${mailman3::postorious::installroot}/venv2",
+      virtualenv => "${mailman3::postorius::installroot}/venv2",
       before     => Exec['postorius collectstatic'],
     }
   }
