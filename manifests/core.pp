@@ -20,11 +20,13 @@ class mailman3::core (
   }->
 
   user { $username:
-    ensure  => present,
-    gid     => $groupname,
-    home    => "/home/${username}",
-    system  => true,
-    require => Group[$groupname],
+    ensure     => present,
+    gid        => $groupname,
+    home       => "/home/${username}",
+    system     => true,
+    managehome => true,
+    shell      => '/bin/bash',
+    require    => Group[$groupname],
   }->
 
   file {
@@ -94,8 +96,8 @@ class mailman3::core (
   service { 'mailman3':
     ensure     => running,
     enable     => true,
-    hasrestart => false,
-    hasstatus  => true,
+    hasrestart => true,
+    hasstatus  => false,
     require    => File['/etc/init.d/mailman3', '/etc/mailman.cfg'],
   }
 

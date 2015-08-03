@@ -16,6 +16,7 @@
 
 . /lib/lsb/init-functions
 
+NAME='Mailman 3'
 export PYTHONPATH=<%= @installroot %>/venv3/lib/python3.4/site-packages/
 DAEMON=<%= @installroot %>/venv3/bin/mailman
 RUN_AS=`id -u <%= @username %>`
