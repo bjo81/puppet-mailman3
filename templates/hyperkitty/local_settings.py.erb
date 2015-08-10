@@ -343,7 +343,11 @@ APP_NAME = '<%= @app_name %>'
 
 # Allow authentication with the internal user database?
 # By default, only a login through Persona or your email provider is allowed.
+<% unless @use_internal_auth %>
 USE_INTERNAL_AUTH = False
+<% else %>
+USE_INTERNAL_AUTH = True
+<% end %>
 
 # Use SSL when logged in
 <% unless @use_ssl %>

@@ -102,6 +102,7 @@ class mailman3::hyperkitty::config (
   $timezone = 'America/Los_Angeles',
   $language_code = 'en-us',
   $use_i18n = true,
+  $use_internal_auth = false,
   $use_l10n = true,
   $use_ssl = false,
   $use_tz = true,
@@ -116,6 +117,7 @@ class mailman3::hyperkitty::config (
 
   validate_bool($debug)
   validate_bool($use_i18n)
+  validate_bool($use_internal_auth)
   validate_bool($use_l10n)
   validate_bool($use_tz)
   validate_bool($use_ssl)
