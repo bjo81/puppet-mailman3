@@ -122,7 +122,7 @@ class mailman3::core::config (
   $archivedir                = '$var_dir/archives',
   $bindir                    = '$argv',
   $db                        = 'sqlite',
-#  $databaseclass             = 'mailman.database.sqlite.SQLiteDatabase',
+#  $databaseclass            = 'mailman.database.sqlite.SQLiteDatabase',
   $databasedebug             = 'no',
   $databaseurl               = 'sqlite:///$DATA_DIR/mailman.db',
   $datadir                   = '$var_dir/data',
@@ -237,6 +237,7 @@ class mailman3::core::config (
   $webserviceapiversion      = '3.0',
   $webserviceadminuser       = 'restadmin',
   $webserviceadminpass       = 'restpass',
+  $custom_config             = '',
 
 
 
@@ -263,15 +264,17 @@ class mailman3::core::config (
       ensure     => present,
       pkgname    => $db_connector,
       virtualenv => "${mailman3::core::installroot}/venv3",
+      notify     => Service['mailman3'],
     }
   }
 
   file {
     $mailmancfgfile:
       ensure  => present,
-      content => template('mailman3/mailman.cfg.erb'),
+      content => template('mailman3/core/mailman.cfg.erb'),
       owner   => $::mailman3::core::username,
       group   => $::mailman3::core::groupname,
+      mode    => '0600',
       notify  => Service['mailman3'];
   }
 

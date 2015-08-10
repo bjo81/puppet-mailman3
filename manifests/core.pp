@@ -91,6 +91,7 @@ class mailman3::core (
       owner        => $username,
       group        => $groupname,
       require      => [ Package['python3-dev'], File["${installroot}/mailman.txt"] ],
+      notify       => Service['mailman3'],
   }->
 
   service { 'mailman3':
