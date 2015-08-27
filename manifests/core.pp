@@ -9,6 +9,7 @@ class mailman3::core (
 
   include mailman3
   include mailman3::core::config
+  include mailman3::core::logrotate
 
   package { $packages:
     ensure => present,
